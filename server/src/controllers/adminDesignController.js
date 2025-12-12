@@ -1,6 +1,6 @@
 const { z } = require("zod");
 const cloudinary = require("../config/cloudinary");
-const Design = require("../models/Design");
+const Design = require("../models/Desing");
 const Category = require("../models/Category");
 const Subcategory = require("../models/Subcategory");
 const { zCleanString, cleanText } = require("../utils/sanitize");

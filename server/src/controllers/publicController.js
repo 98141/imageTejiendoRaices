@@ -1,6 +1,6 @@
 const Category = require("../models/Category");
 const Subcategory = require("../models/Subcategory");
-const Design = require("../models/Design");
+const Design = require("../models/Desing");
 
 exports.navigation = async (req, res, next) => {
   try {

@@ -21,6 +21,31 @@ const app = express();
 /* Trust proxy (Render / reverse proxies) */
 app.set("trust proxy", 1);
 
+/* CORS */
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
+const allowedOrigins = CLIENT_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean);
+
+const corsOptions = {
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204,
+};
+
+if (process.env.NODE_ENV !== "production") {
+  app.use(cors({ ...corsOptions, origin: true }));
+} else {
+  app.use(
+    cors({
+      ...corsOptions,
+      origin: (origin, cb) => {
+        if (!origin) return cb(null, true);
+        return cb(null, allowedOrigins.includes(origin));
+      },
+    })
+  );
+}
+
 /* Core parsing */
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
@@ -44,16 +69,6 @@ app.use(
     max: 300,
     standardHeaders: true,
     legacyHeaders: false,
-  })
-);
-
-/* CORS */
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN;
-app.use(
-  cors({
-    origin: CLIENT_ORIGIN,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
 );
 
