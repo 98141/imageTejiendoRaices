@@ -6,27 +6,34 @@ const COOKIE_NAME = process.env.COOKIE_NAME || "admin_token";
 exports.requireAdmin = async (req, res, next) => {
   try {
     const token = req.cookies?.[COOKIE_NAME];
+
+    // Caso esperado: no autenticado -> responder aquí (no errorHandler)
     if (!token) {
-      res.status(401);
-      throw new Error("No autenticado");
+      return res.status(401).json({ message: "No autenticado" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const admin = await AdminUser.findById(decoded.sub);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      // Token inválido/expirado -> 401 limpio
+      return res.status(401).json({ message: "Token inválido o expirado" });
+    }
 
+    const admin = await AdminUser.findById(decoded.sub).lean();
     if (!admin || !admin.isActive) {
-      res.status(401);
-      throw new Error("Usuario no válido");
+      return res.status(401).json({ message: "Usuario no válido" });
     }
 
     req.admin = {
-      id: admin._id.toString(),
+      id: String(admin._id),
       email: admin.email,
       role: admin.role,
     };
-    next();
-  } catch (e) {
-    res.status(401);
-    next(e);
+
+    return next();
+  } catch (err) {
+    // Aquí ya son fallos no esperados -> 500 real
+    return next(err);
   }
 };
