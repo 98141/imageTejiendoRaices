@@ -9,6 +9,7 @@ import AdminLayout from "./admin/AdminLayout";
 import AdminCategoriesPage from "./admin/AdminCategoriesPage";
 import AdminSubcategoriesPage from "./admin/AdminSubcategoriesPage";
 import AdminDesignsPage from "./admin/AdminDesignsPage";
+import AdminOrdersPage from "./admin/AdminOrdersPage";
 
 import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
@@ -42,6 +43,7 @@ export default function App() {
           <Route path="categories" element={<AdminCategoriesPage />} />
           <Route path="subcategories" element={<AdminSubcategoriesPage />} />
           <Route path="designs" element={<AdminDesignsPage />} />
+          <Route path="orders" element={<AdminOrdersPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

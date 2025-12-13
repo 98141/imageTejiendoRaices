@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api/api";
 import ImageModal from "./ImageModal";
+import { CartContext } from "../cart/CartContext";
+import CartDrawer from "../cart/CartDrawer";
 
 export default function CatalogPage() {
   const { categorySlug, subcategorySlug } = useParams();
+  const { add, count } = useContext(CartContext);
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [slow, setSlow] = useState(false);
   const [error, setError] = useState("");
   const [selected, setSelected] = useState(null);
+  const [cartOpen, setCartOpen] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -62,25 +67,53 @@ export default function CatalogPage() {
       ) : (
         <div className="grid">
           {items.map((d) => (
-            <button key={d.sku} className="tile" onClick={() => setSelected(d)}>
-              <img
-                className="tile__img"
-                src={d.image.url}
-                alt={d.name}
-                loading="lazy"
-              />
-              <div className="tile__meta">
-                <div className="tile__name">{d.name}</div>
-                <div className="tile__sku">SKU: {d.sku}</div>
+            <div key={d.sku} className="tile" style={{ padding: 0 }}>
+              <button
+                className="tile"
+                style={{ border: "none", width: "100%" }}
+                onClick={() => setSelected(d)}
+              >
+                <img
+                  className="tile__img"
+                  src={d.image.url}
+                  alt={d.name}
+                  loading="lazy"
+                />
+                <div className="tile__meta">
+                  <div className="tile__name">{d.name}</div>
+                  <div className="tile__sku">SKU: {d.sku}</div>
+                </div>
+              </button>
+
+              <div
+                style={{ padding: 10, borderTop: "1px solid var(--border)" }}
+              >
+                <button
+                  className="btn primary"
+                  onClick={() => add(d)}
+                  style={{ width: "100%" }}
+                >
+                  Agregar al carrito
+                </button>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       )}
 
+      {/* Botón flotante carrito */}
+      <button
+        className="btn primary"
+        onClick={() => setCartOpen(true)}
+        style={{ position: "fixed", right: 16, bottom: 16, zIndex: 30 }}
+      >
+        Carrito ({count})
+      </button>
+
       {selected ? (
         <ImageModal design={selected} onClose={() => setSelected(null)} />
       ) : null}
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     </section>
   );
 }

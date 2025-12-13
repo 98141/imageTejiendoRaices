@@ -35,6 +35,14 @@ export default function AdminLayout() {
         >
           Diseños
         </Link>
+        <Link
+          className={`adminNav__link ${
+            loc.pathname.includes("/admin/orders") ? "isActive" : ""
+          }`}
+          to="/admin/orders"
+        >
+          Pedidos
+        </Link>
 
         <div className="adminNav__footer">
           <div className="muted">{admin?.email}</div>
