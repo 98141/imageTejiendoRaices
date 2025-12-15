@@ -54,3 +54,16 @@ exports.updateStatus = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.getById = async (req, res, next) => {
+  try {
+    const item = await Order.findById(req.params.id).lean();
+    if (!item) {
+      res.status(404);
+      throw new Error("Pedido no encontrado");
+    }
+    res.json({ item });
+  } catch (e) {
+    next(e);
+  }
+};

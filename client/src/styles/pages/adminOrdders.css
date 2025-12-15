@@ -1,29 +1,43 @@
-/* Página: Pedidos */
-.orders__alerts {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.orders__filters {
-  margin-bottom: 12px;
-}
-
-.orders__code {
-  font-weight: 900;
+/* Estado visible (pill) */
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-weight: 800;
+  font-size: 12px;
   letter-spacing: 0.2px;
 }
 
-/* Acciones: botones más compactos para listas largas */
-.orders__actions .btn {
-  padding: 8px 10px;
-  border-radius: 10px;
+/* Colores por estado */
+.statusPill--RECIBIDO {
+  background: rgba(91, 140, 255, 0.14);
+  border-color: rgba(91, 140, 255, 0.35);
 }
 
-/* En pantallas pequeñas, evita que se desborde */
-@media (max-width: 520px) {
-  .orders__actions .btn {
-    width: 100%;
-    justify-content: center;
-  }
+.statusPill--EN_PROCESO {
+  background: rgba(255, 200, 0, 0.14);
+  border-color: rgba(255, 200, 0, 0.35);
+}
+
+.statusPill--COMPLETADO {
+  background: rgba(80, 210, 140, 0.14);
+  border-color: rgba(80, 210, 140, 0.35);
+}
+
+.statusPill--CANCELADO {
+  background: rgba(255, 91, 110, 0.14);
+  border-color: rgba(255, 91, 110, 0.35);
+}
+
+/* Botón del flujo: resalta el estado actual */
+.orders__stepBtn.isActive {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Compacto y consistente */
+.orders__actions .orders__stepBtn {
+  white-space: nowrap;
 }
