@@ -3,7 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
-const mongoSanitize = require("@exortek/express-mongo-sanitize");
+const mongoSanitize = require("express-mongo-sanitize");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
 const morgan = require("morgan");
@@ -26,28 +26,45 @@ app.set("trust proxy", 1);
 
 /* CORS */
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
-const allowedOrigins = CLIENT_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean);
+const allowedOrigins = CLIENT_ORIGIN.split(",")
+  .map((s) => s.trim().replace(/\/$/, ""))
+  .filter(Boolean);
 
 const corsOptions = {
   credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   optionsSuccessStatus: 204,
 };
 
 if (process.env.NODE_ENV !== "production") {
+  // LOCAL: permite cualquier origin (evita bloqueos)
   app.use(cors({ ...corsOptions, origin: true }));
 } else {
+  // PROD: solo origins permitidos
   app.use(
     cors({
       ...corsOptions,
       origin: (origin, cb) => {
         if (!origin) return cb(null, true);
-        return cb(null, allowedOrigins.includes(origin));
+        const o = origin.replace(/\/$/, "");
+        return cb(null, allowedOrigins.includes(o));
       },
     })
   );
 }
+
+// Preflight para todas las rutas
+app.options("*", cors(corsOptions));
+
+
+/* Health */
+app.get(["/health", "/api/health"], (req, res) => {
+  res.status(200).json({ ok: true, ts: new Date().toISOString() });
+});
+
+/* Trust proxy (Render / reverse proxies) */
+app.set("trust proxy", 1);
 
 /* Core parsing */
 app.use(express.json({ limit: "1mb" }));
@@ -75,10 +92,7 @@ app.use(
   })
 );
 
-/* Health */
-app.get("/api/health", (req, res) => {
-  res.json({ ok: true, ts: new Date().toISOString() });
-});
+
 
 /* Routes */
 app.use("/api/auth", authRoutes);

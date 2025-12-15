@@ -1,50 +1,82 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import api from "../api/api";
 
 export default function HealthGate({ children }) {
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   const [seconds, setSeconds] = useState(0);
-  const timerRef = useRef(null);
 
-  const start = async () => {
+  const timerRef = useRef(null);
+  const startedRef = useRef(false); // evita doble start por StrictMode
+
+  const clearTimer = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
+  };
+
+  const start = useCallback(async () => {
+    // reseteo
     setReady(false);
     setFailed(false);
     setSeconds(0);
-
-    if (timerRef.current) clearInterval(timerRef.current);
+    clearTimer();
 
     // contador visual hasta 60s
     timerRef.current = setInterval(() => {
       setSeconds((s) => {
         const next = s + 1;
         if (next >= 60) {
-          clearInterval(timerRef.current);
+          clearTimer();
           setFailed(true);
         }
         return next;
       });
     }, 1000);
 
+    // Abort manual a los 60s (por si axios no corta)
+    const controller = new AbortController();
+    const kill = setTimeout(() => controller.abort(), 60_000);
+
     try {
-      // Intento con timeout 60s (api ya tiene timeout global)
-      const { data } = await api.get("/health");
-      if (data?.ok) setReady(true);
-      else setFailed(true);
+      // 1) intentamos la ruta esperada (si baseURL = .../api, esto pega /api/health)
+      const r1 = await api.get("/health", { signal: controller.signal });
+      // Si llega 200, consideramos listo aunque data.ok no venga
+      if (r1?.status === 200) {
+        setReady(true);
+        return;
+      }
+    } catch (e) {
+      // seguimos al fallback
+    } finally {
+      clearTimeout(kill);
+    }
+
+    // fallback: si alguien configuró baseURL sin /api, intentamos /api/health explícito
+    const controller2 = new AbortController();
+    const kill2 = setTimeout(() => controller2.abort(), 60_000);
+
+    try {
+      const r2 = await api.get("/api/health", { signal: controller2.signal });
+      if (r2?.status === 200) {
+        setReady(true);
+        return;
+      }
+      setFailed(true);
     } catch {
       setFailed(true);
     } finally {
-      if (timerRef.current) clearInterval(timerRef.current);
+      clearTimeout(kill2);
+      clearTimer();
     }
-  };
+  }, []);
 
   useEffect(() => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+
     start();
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => clearTimer();
+  }, [start]);
 
   if (ready) return children;
 
