@@ -1,5 +1,5 @@
 const { z } = require("zod");
-const Subcategory = require("../models/Subcategory");
+const Subcategory = require("../models/SubCategory");
 const Category = require("../models/Category");
 const { slugify } = require("../utils/slug");
 const { zCleanString } = require("../utils/sanitize");
