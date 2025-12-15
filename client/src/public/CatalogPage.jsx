@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api/api";
 import ImageModal from "./ImageModal";
-import { CartContext } from "../cart/CartContext";
+import { CartContext } from "../cart/cartContext";
 import CartDrawer from "../cart/CartDrawer";
 
 export default function CatalogPage() {
