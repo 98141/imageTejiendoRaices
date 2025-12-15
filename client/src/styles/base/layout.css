@@ -1,0 +1,19 @@
+.container {
+  width: min(var(--container-max), calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.page {
+  padding: 16px 0;
+}
+
+h1, h2, h3 {
+  margin: 0 0 12px;
+  line-height: 1.2;
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: 12px 0;
+  }
+}

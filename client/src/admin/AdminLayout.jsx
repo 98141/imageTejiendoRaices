@@ -1,10 +1,17 @@
 import React, { useContext } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 
 export default function AdminLayout() {
   const { admin, logout } = useContext(AuthContext);
   const loc = useLocation();
+  const navigate = useNavigate();
+
+
+    const handleLogout = async () => {
+      await logout(); 
+      navigate("/", { replace: true });
+    };
 
   return (
     <div className="adminShell">
@@ -46,7 +53,7 @@ export default function AdminLayout() {
 
         <div className="adminNav__footer">
           <div className="muted">{admin?.email}</div>
-          <button className="btn" onClick={logout}>
+          <button className="btn" onClick={handleLogout}>
             Salir
           </button>
         </div>

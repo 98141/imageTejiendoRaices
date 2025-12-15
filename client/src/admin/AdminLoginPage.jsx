@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 
 export default function AdminLoginPage() {
@@ -25,9 +25,11 @@ export default function AdminLoginPage() {
     }
   };
 
+  const loc = useLocation();
+
   return (
     <div className="page container">
-      <div className="card">
+      <div className="card authCard">
         <h2>Admin Login</h2>
         {err ? <div className="alert">{err}</div> : null}
 
@@ -51,6 +53,14 @@ export default function AdminLoginPage() {
             {busy ? "Entrando..." : "Entrar"}
           </button>
         </form>
+        <Link
+          className={`adminNav__link authFooterLink ${
+            loc.pathname.includes("/") ? "isActive" : ""
+          }`}
+          to="/"
+        >
+          Volver
+        </Link>
       </div>
     </div>
   );

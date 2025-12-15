@@ -7,6 +7,7 @@ const OrderSchema = new mongoose.Schema(
     customer: {
       name: { type: String, required: true, trim: true, maxlength: 80 },
       phone: { type: String, default: "", trim: true, maxlength: 30 },
+      codOrder: { type: String, required: true, trim: true, maxlength: 20 },
     },
 
     items: [

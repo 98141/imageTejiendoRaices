@@ -5,6 +5,7 @@ import { CartContext } from "./cartContext";
 export default function CartDrawer({ open, onClose }) {
   const { items, remove, setQty, clear } = useContext(CartContext);
   const [customerName, setCustomerName] = useState("");
+  const [customerCodOrder, setCustomerCodOrder] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
@@ -13,14 +14,15 @@ export default function CartDrawer({ open, onClose }) {
   const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER;
 
   const canSend = useMemo(() => {
-    return items.length > 0 && customerName.trim().length >= 2 && !busy;
-  }, [items.length, customerName, busy]);
+    return items.length > 0 && customerName.trim().length >= 2 && customerCodOrder.trim().length >= 2 && !busy;
+  }, [items.length, customerName, customerCodOrder, busy]);
 
   const buildWhatsappText = (orderCode) => {
     const lines = [
       `Hola, quiero hacer un pedido de sublimación.`,
       `Pedido: ${orderCode}`,
       `Cliente: ${customerName.trim()}`,
+      customerCodOrder.trim() ? `Codigo: ${customerCodOrder.trim()}` : null,
       customerPhone.trim() ? `Tel: ${customerPhone.trim()}` : null,
       "",
       "Items:",
@@ -37,6 +39,7 @@ export default function CartDrawer({ open, onClose }) {
     try {
       const payload = {
         customerName,
+        customerCodOrder,
         customerPhone,
         notes,
         items: items.map((i) => ({ sku: i.sku, qty: i.qty })),
@@ -54,6 +57,7 @@ export default function CartDrawer({ open, onClose }) {
 
       clear();
       setCustomerName("");
+      setCustomerCodOrder("");
       setCustomerPhone("");
       setNotes("");
       setMsg(`Pedido creado: ${orderCode}`);
@@ -147,6 +151,12 @@ export default function CartDrawer({ open, onClose }) {
                 placeholder="Nombre del cliente (obligatorio)"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
+              />
+              <input
+                className="input"
+                placeholder="Codigo compra Tejiendo Raíces (obligatorio)"
+                value={customerCodOrder}
+                onChange={(e) => setCustomerCodOrder(e.target.value)}
               />
               <input
                 className="input"

@@ -1,0 +1,40 @@
+.btn {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Nuevo estilo recomendado */
+.btn--primary {
+  background: var(--primary);
+  border-color: transparent;
+  color: #0b1020;
+  font-weight: 700;
+}
+
+.btn--danger {
+  background: rgba(255, 91, 110, 0.18);
+  border-color: rgba(255, 91, 110, 0.35);
+}
+
+/* Compatibilidad con tu JSX actual (.btn primary / .btn danger) */
+.btn.primary { background: var(--primary); border-color: transparent; color: #0b1020; font-weight: 700; }
+.btn.danger { background: rgba(255, 91, 110, 0.18); border-color: rgba(255, 91, 110, 0.35); }

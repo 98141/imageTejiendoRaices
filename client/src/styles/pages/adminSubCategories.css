@@ -1,0 +1,9 @@
+/* Página: Subcategorías */
+.adminSubcats__row {
+  gap: 10px;
+}
+
+/* Para que tablas no rompan en móvil */
+.adminSubcats__table {
+  margin-top: 12px;
+}

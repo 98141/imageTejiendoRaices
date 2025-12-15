@@ -1,0 +1,23 @@
+/* Base */
+@import "./base/tokens.css";
+@import "./base/reset.css";
+@import "./base/layout.css";
+
+/* Components reutilizables */
+@import "./components/ui.css";
+@import "./components/button.css";
+@import "./components/forms.css";
+@import "./components/navbar.css";
+@import "./components/admin.css";
+@import "./components/table.css";
+@import "./components/catalog.css";
+@import "./components/modal.css";
+
+/* Pages (específicos) */
+@import "./pages/catalog.css";
+@import "./pages/adminLogin.css";
+@import "./pages/adminCategories.css";
+@import "./pages/adminSubCategories.css";
+@import "./pages/adminOrdders.css";
+@import "./pages/adminDesigns.css";
+@import "./pages/healthGate.css";

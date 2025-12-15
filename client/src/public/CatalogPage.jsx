@@ -67,10 +67,9 @@ export default function CatalogPage() {
       ) : (
         <div className="grid">
           {items.map((d) => (
-            <div key={d.sku} className="tile" style={{ padding: 0 }}>
+            <div key={d.sku} className="tile" >
               <button
-                className="tile"
-                style={{ border: "none", width: "100%" }}
+                className="tileBtn"
                 onClick={() => setSelected(d)}
               >
                 <img
@@ -85,13 +84,10 @@ export default function CatalogPage() {
                 </div>
               </button>
 
-              <div
-                style={{ padding: 10, borderTop: "1px solid var(--border)" }}
-              >
+              <div className="tileActions">
                 <button
                   className="btn primary"
                   onClick={() => add(d)}
-                  style={{ width: "100%" }}
                 >
                   Agregar al carrito
                 </button>

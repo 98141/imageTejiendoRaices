@@ -13,8 +13,6 @@ export default function PublicNavbar() {
     (async () => {
       setError("");
       try {
-        // Health primero ayuda con cold-start
-        await api.get("/health");
         const { data } = await api.get("/public/navigation");
         if (mounted) setNav(data.items || []);
       } catch (e) {

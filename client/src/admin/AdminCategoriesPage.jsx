@@ -60,7 +60,7 @@ export default function AdminCategoriesPage() {
         </button>
       </div>
 
-      <div className="card">
+      <div className="card tableWrap">
         <table className="table">
           <thead>
             <tr>

@@ -80,21 +80,10 @@ export default function AdminOrdersPage() {
     <div className="page">
       <h2>Pedidos</h2>
 
-      {toast ? (
-        <div className="alert" style={{ marginBottom: 10 }}>
-          {toast}
-        </div>
-      ) : null}
-      {err ? (
-        <div className="alert" style={{ marginBottom: 10 }}>
-          {err}
-        </div>
-      ) : null}
+      {toast ? <div className="orders__alerts">{toast}</div> : null}
+      {err ? <div className="orders__alerts">{err}</div> : null}
 
-      <div
-        className="card formRow"
-        style={{ gridTemplateColumns: "220px 1fr auto" }}
-      >
+      <div className="card formRow formRow--3 orders__filters">
         <select
           className="input"
           value={status}
@@ -122,7 +111,7 @@ export default function AdminOrdersPage() {
         </button>
       </div>
 
-      <div className="card">
+      <div className="card tableWrap">
         <table className="table">
           <thead>
             <tr>
@@ -137,7 +126,7 @@ export default function AdminOrdersPage() {
           <tbody>
             {filtered.map((o) => (
               <tr key={o._id}>
-                <td style={{ fontWeight: 800 }}>{o.orderCode}</td>
+                <td className="orders__code">{o.orderCode}</td>
                 <td>
                   <div>{o.customer?.name}</div>
                   <div className="muted">{o.customer?.phone || "—"}</div>
@@ -147,7 +136,7 @@ export default function AdminOrdersPage() {
                 <td className="muted">
                   {new Date(o.createdAt).toLocaleString()}
                 </td>
-                <td className="actions">
+                <td className="actions orders__actions">
                   <button
                     className="btn"
                     onClick={() => patchStatus(o._id, "RECIBIDO")}
@@ -179,9 +168,7 @@ export default function AdminOrdersPage() {
         </table>
 
         {filtered.length === 0 ? (
-          <div className="muted" style={{ marginTop: 10 }}>
-            No hay pedidos.
-          </div>
+          <div className="muted">No hay pedidos.</div>
         ) : null}
       </div>
     </div>

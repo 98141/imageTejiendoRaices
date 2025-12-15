@@ -94,7 +94,7 @@ export default function AdminDesignsPage() {
       {err ? <div className="alert">{err}</div> : null}
 
       <div className="card">
-        <h3>Crear diseño</h3>
+        <h3 className="designs__cardTitle">Crear diseño</h3>
         <div className="formGrid">
           <input
             className="input"
@@ -154,14 +154,14 @@ export default function AdminDesignsPage() {
         <button className="btn primary" onClick={create} disabled={!canCreate}>
           Crear
         </button>
-        <div className="muted">
+        <div className="muted designs__help">
           Límite imagen: 10MB. Formatos: jpg/png/webp.
         </div>
       </div>
 
-      <div className="card">
+      <div className="card tableWrap">
         <h3>Listado</h3>
-        <div className="formRow">
+        <div className="formRow designs__filters">
           <select
             className="input"
             value={filterCategoryId}

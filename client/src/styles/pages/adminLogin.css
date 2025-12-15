@@ -1,0 +1,9 @@
+/* Ajustes de login */
+.authCard h2 {
+  margin-bottom: 10px;
+}
+
+.authFooterLink {
+  margin-top: 10px;
+  display: inline-block;
+}

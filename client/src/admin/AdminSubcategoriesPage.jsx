@@ -58,7 +58,7 @@ export default function AdminSubcategoriesPage() {
       <h2>Subcategorías</h2>
       {err ? <div className="alert">{err}</div> : null}
 
-      <div className="card formRow">
+      <div className="card formRow formRow--3 adminSubcats__row">
         <select
           className="input"
           value={categoryId}
@@ -83,7 +83,7 @@ export default function AdminSubcategoriesPage() {
         </button>
       </div>
 
-      <div className="card">
+      <div className="card tableWrap adminSubcats__table">
         <table className="table">
           <thead>
             <tr>

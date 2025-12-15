@@ -11,6 +11,11 @@ const createSchema = z.object({
     .min(2)
     .max(80)
     .transform((v) => cleanText(v)),
+  customerCodOrder: z
+    .string()
+    .min(2)
+    .max(20)
+    .transform((v) => cleanText(v)),
   customerPhone: z
     .string()
     .max(30)
@@ -67,7 +72,7 @@ exports.create = async (req, res, next) => {
 
     const order = await Order.create({
       orderCode,
-      customer: { name: body.customerName, phone: body.customerPhone || "" },
+      customer: { name: body.customerName, phone: body.customerPhone, codOrder: body.customerCodOrder|| "" },
       items: snapshot,
       notes: body.notes || "",
       status: "RECIBIDO",
@@ -80,6 +85,7 @@ exports.create = async (req, res, next) => {
       createdAt: order.createdAt,
       itemsCount: order.items.length,
       customerName: order.customer.name,
+      customerCodOrder: order.customer.codOrder,
     });
 
     res.status(201).json({

@@ -1,0 +1,66 @@
+.adminShell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+.adminNav {
+  border-right: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 14px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.adminNav__title {
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.adminNav__link {
+  display: block;
+  padding: 10px 10px;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: 12px;
+  border: 1px solid transparent;
+}
+
+.adminNav__link:hover,
+.adminNav__link.isActive {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.adminNav__footer {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.adminMain {
+  padding: 16px;
+}
+
+/* Responsivo admin */
+@media (max-width: 920px) {
+  .adminShell {
+    grid-template-columns: 1fr;
+  }
+
+  .adminNav {
+    height: auto;
+    position: relative;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    gap: 8px;
+  }
+
+  .adminNav__link {
+    display: inline-flex;
+    width: fit-content;
+  }
+}

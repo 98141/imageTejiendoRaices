@@ -1,0 +1,22 @@
+/* Página: Diseños */
+.designs__cardTitle {
+  margin-bottom: 10px;
+}
+
+.designs__help {
+  margin-top: 8px;
+}
+
+/* Listado: filtros alineados y separados */
+.designs__filters {
+  margin-bottom: 10px;
+}
+
+/* Imagen miniatura ya la maneja .thumb; solo ajustamos consistencia */
+.designs__table td {
+  vertical-align: middle;
+}
+
+.thumb {
+  width: 50px;
+}

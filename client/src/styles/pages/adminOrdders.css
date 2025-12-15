@@ -1,0 +1,29 @@
+/* Página: Pedidos */
+.orders__alerts {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.orders__filters {
+  margin-bottom: 12px;
+}
+
+.orders__code {
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+/* Acciones: botones más compactos para listas largas */
+.orders__actions .btn {
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+/* En pantallas pequeñas, evita que se desborde */
+@media (max-width: 520px) {
+  .orders__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
