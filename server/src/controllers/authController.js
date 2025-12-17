@@ -12,10 +12,13 @@ const loginSchema = z.object({
 
 function setAuthCookie(res, token) {
   const secure = String(process.env.COOKIE_SECURE || "false") === "true";
+
+  const sameSite = secure ? "none" : "lax";
+
   res.cookie(COOKIE_NAME, token, {
     httpOnly: true,
     secure,
-    sameSite: "lax",
+    sameSite,
     path: "/",
     maxAge: 24 * 60 * 60 * 1000,
   });
@@ -44,9 +47,18 @@ exports.login = async (req, res, next) => {
 };
 
 exports.logout = async (req, res) => {
-  res.clearCookie(COOKIE_NAME, { path: "/" });
+  const secure = String(process.env.COOKIE_SECURE || "false") === "true";
+  const sameSite = secure ? "none" : "lax";
+
+  res.clearCookie(COOKIE_NAME, {
+    path: "/",
+    secure,
+    sameSite,
+  });
+
   res.json({ ok: true });
 };
+
 
 exports.me = async (req, res) => {
   res.json({ ok: true, admin: req.admin });

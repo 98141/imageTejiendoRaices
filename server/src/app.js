@@ -55,8 +55,22 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Preflight para todas las rutas
-app.options("*", cors(corsOptions));
-
+// Preflight para todas las rutas (misma config que el CORS principal)
+if (process.env.NODE_ENV !== "production") {
+  app.options("*", cors({ ...corsOptions, origin: true }));
+} else {
+  app.options(
+    "*",
+    cors({
+      ...corsOptions,
+      origin: (origin, cb) => {
+        if (!origin) return cb(null, true);
+        const o = origin.replace(/\/$/, "");
+        return cb(null, allowedOrigins.includes(o));
+      },
+    })
+  );
+}
 
 /* Health */
 app.get(["/health", "/api/health"], (req, res) => {
