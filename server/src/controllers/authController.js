@@ -11,7 +11,11 @@ const loginSchema = z.object({
 });
 
 function setAuthCookie(res, token) {
-  const secure = String(process.env.COOKIE_SECURE || "false") === "true";
+  const secure =
+    String(process.env.COOKIE_SECURE || "")
+      .trim()
+      .toLowerCase() === "true" || process.env.NODE_ENV === "production";
+
 
   const sameSite = secure ? "none" : "lax";
 
@@ -47,7 +51,11 @@ exports.login = async (req, res, next) => {
 };
 
 exports.logout = async (req, res) => {
-  const secure = String(process.env.COOKIE_SECURE || "false") === "true";
+  const secure =
+    String(process.env.COOKIE_SECURE || "")
+      .trim()
+      .toLowerCase() === "true" || process.env.NODE_ENV === "production";
+
   const sameSite = secure ? "none" : "lax";
 
   res.clearCookie(COOKIE_NAME, {
